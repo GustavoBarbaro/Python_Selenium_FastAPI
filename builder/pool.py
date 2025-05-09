@@ -3,7 +3,7 @@ from queue import Queue
 from threading import Lock
 
 
-from automation.settings import setup_webdriver, pool_size
+from automation.settings import setup_webdriver, POOL_SIZE
 
 
 _pool = Queue()
@@ -14,7 +14,7 @@ def init_pool():
 
     options, service = setup_webdriver()
 
-    p_size = pool_size()
+    p_size = POOL_SIZE
 
     for _ in range(p_size):
         driver = webdriver.Chrome(service=service, options=options)

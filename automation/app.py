@@ -6,17 +6,13 @@ from executer.service import driver_to_scrape
 
 
 
-
-
-
-
 @asynccontextmanager
 async def lifespan(api: FastAPI):
     #run BEFORE system start
     init_pool()
 
     yield
-    #run AFTER system stop
+    #run BEFORE system stop
     shutdown_pool()
 
 
@@ -28,6 +24,5 @@ api = FastAPI(lifespan=lifespan)
 async def scrape(category: str = Query(...)):
 
     return await driver_to_scrape(category)
-
 
 

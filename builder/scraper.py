@@ -4,6 +4,8 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 
+from models.product import Product
+
 
 def scrape_products(category: str, driver: WebDriver):
     
@@ -24,8 +26,8 @@ def scrape_products(category: str, driver: WebDriver):
     option.click()
 
 
-    #save table data
-    products = []
+    #to save table data
+    products: list[Product] = []
 
 
     #find if have pagination
@@ -49,13 +51,13 @@ def scrape_products(category: str, driver: WebDriver):
             raw_price = cols[3].text.replace("$", "").strip()
             price = float(raw_price)
 
-            product = {
-                "ID": cols[0].text,
-                "Name": cols[1].text,
-                "Category": cols[2].text,
-                "Price": price,
-                "Stock": cols[4].text,
-            }
+            product = Product (
+                ID = cols[0].text,
+                Name = cols[1].text,
+                Category = cols[2].text,
+                Price = price,
+                Stock = cols[4].text,
+            )
 
             products.append(product)
 

@@ -1,6 +1,5 @@
 from builder.pool import get_available_worker, return_worker
 from builder.scraper import scrape_products
-from automation.settings import pool_size
 from fastapi import HTTPException
 
 import asyncio
