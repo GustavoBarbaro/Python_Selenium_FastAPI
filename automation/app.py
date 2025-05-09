@@ -1,24 +1,31 @@
-from fastapi import FastAPI, Query
+from fastapi import FastAPI, Request
+from contextlib import asynccontextmanager
+
+from executer.service import setup_webdriver, end_webdriver
 from builder.scraper import scrape_products
 
 
 
-api = FastAPI()
-
-def analyse(category: str):
-
-    # Simulate some analysis
-    if category == "sports":
-        return {"category": category, "data": "Sports data"}
-    elif category == "news":
-        return {"category": category, "data": "News data"}
-    else:
-        return {"error": "Category not found"}
 
 
+@asynccontextmanager
+async def lifespan(api: FastAPI):
+    #run BEFORE system start
+    api.state.driver = setup_webdriver()
+
+
+    yield
+    #run AFTER system stop
+    end_webdriver(api.state.driver)
+
+
+
+api = FastAPI(lifespan=lifespan)
 
 
 @api.get("/scrape")
-def scrape(category: str):
+async def scrape(category: str, request:Request):
 
-    return scrape_products(category)
+    driver = api.state.driver
+
+    return scrape_products(category, driver)
