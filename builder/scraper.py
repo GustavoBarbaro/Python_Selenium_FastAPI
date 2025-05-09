@@ -74,6 +74,8 @@ def scrape_products(category: str):
 
 
     print(products)
+
+    return products
             
 
 
