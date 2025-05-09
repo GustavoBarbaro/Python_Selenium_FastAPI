@@ -1,27 +1,19 @@
-from selenium import webdriver
-from selenium.webdriver.chrome.service import Service
-from selenium.webdriver.chrome.options import Options
-from webdriver_manager.chrome import ChromeDriverManager
+from builder.pool import get_available_worker, return_worker
+from builder.scraper import scrape_products
+from fastapi import HTTPException
 
 
 
 
-def setup_webdriver():
 
-    #initialize and configure webdriver
+def driver_to_scrape(category: str):
 
-    options = Options()
-    options.add_argument('--headless')
-    options.add_argument('--no-sandbox')
-    options.add_argument('--disable-dev-shm-usage')
+    driver = get_available_worker()
 
-    driver = webdriver.Chrome(
-        service=Service(ChromeDriverManager().install()),
-        options=options
-    )
+    if not driver:
+        raise HTTPException(status_code=429, detail="no worker available")
 
-    return driver
-
-
-def end_webdriver(driver:webdriver):
-    driver.quit()
+    try:
+        return scrape_products(category, driver)
+    finally:
+        return_worker(driver)
