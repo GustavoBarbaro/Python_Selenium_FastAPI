@@ -60,7 +60,7 @@ def scrape_products(category: str, driver: WebDriver):
             products.append(product)
 
 
-    print(products)
+    # print(products)
 
     return products
             

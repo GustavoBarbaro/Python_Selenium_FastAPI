@@ -1,8 +1,11 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, Query
 from contextlib import asynccontextmanager
 
 from builder.pool import init_pool, shutdown_pool
 from executer.service import driver_to_scrape
+
+
+
 
 
 
@@ -22,6 +25,9 @@ api = FastAPI(lifespan=lifespan)
 
 
 @api.get("/scrape")
-async def scrape(category: str):
+async def scrape(category: str = Query(...)):
 
-    return driver_to_scrape(category)
+    return await driver_to_scrape(category)
+
+
+

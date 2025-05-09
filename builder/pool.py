@@ -2,6 +2,7 @@ from selenium import webdriver
 from queue import Queue
 from threading import Lock
 
+
 from automation.settings import setup_webdriver, pool_size
 
 
@@ -24,12 +25,14 @@ def get_available_worker():
     with _lock:
         if _pool.empty():
             return None
+        print(f"Pegando WebDriver. Restantes no pool: {_pool.qsize() - 1}")
         return _pool.get()
 
 
 def return_worker(driver):
     with _lock:
         _pool.put(driver)
+        print(f"Devolvendo WebDriver. Total disponíveis: {_pool.qsize()}")
 
 
 
