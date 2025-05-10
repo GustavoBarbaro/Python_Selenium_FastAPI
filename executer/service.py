@@ -21,7 +21,10 @@ async def driver_to_scrape(category: str) -> list[Product]:
 
     try:
         loop = asyncio.get_event_loop()
-        return await loop.run_in_executor(None, scrape_products, category, driver)
+        result = await loop.run_in_executor(None, scrape_products, category, driver)
+        if result == []:
+            raise HTTPException(status_code=404, detail="category not found")
+        return result
     finally:
         return_worker(driver)
 

@@ -3,6 +3,7 @@
 This module contains web scraping logic.
 """
 
+from selenium.common.exceptions import TimeoutException
 from selenium.webdriver.common.by import By
 from selenium.webdriver.remote.webdriver import WebDriver
 from selenium.webdriver.support import expected_conditions as EC
@@ -30,13 +31,19 @@ def scrape_products(category: str, driver: WebDriver) -> list[Product]:
 
     filter_button.click()
 
-    option = wait.until(EC.element_to_be_clickable(
-        (By.XPATH, f"//span[(text())='{category}'][1]")))
-    option.click()
-
-
     #to save table data
     products: list[Product] = []
+
+    #check if the category exists
+    try:
+        option = wait.until(EC.element_to_be_clickable(
+            (By.XPATH, f"//span[(text())='{category}'][1]")))
+
+        option.click()
+
+    except TimeoutException:
+
+        return products
 
 
     #find if have pagination
