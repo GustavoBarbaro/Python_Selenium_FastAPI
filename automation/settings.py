@@ -11,7 +11,7 @@ from webdriver_manager.chrome import ChromeDriverManager
 
 POOL_SIZE = 4
 
-
+#config logger
 LOG_FORMAT = (
     "[%(asctime)s] [%(levelname)s] [%(threadName)s] [job-id:%(job_id)s] %(message)s"
 )
