@@ -1,13 +1,19 @@
-from builder.pool import get_available_worker, return_worker
-from builder.scraper import scrape_products
-from fastapi import HTTPException
+"""service.py.
+
+This module contains tretment for manage the web drivers in the pool.
+"""
 
 import asyncio
 
+from fastapi import HTTPException
+
+from builder.pool import get_available_worker, return_worker
+from builder.scraper import scrape_products
+from models.product import Product
 
 
-async def driver_to_scrape(category: str):
-
+async def driver_to_scrape(category: str) -> list[Product]:
+    """Get a driver from the pool and use it to scrape products."""
     driver = get_available_worker()
 
     if not driver:
@@ -15,8 +21,7 @@ async def driver_to_scrape(category: str):
 
     try:
         loop = asyncio.get_event_loop()
-        result = await loop.run_in_executor(None, scrape_products, category, driver)
-        return result
+        return await loop.run_in_executor(None, scrape_products, category, driver)
     finally:
         return_worker(driver)
 

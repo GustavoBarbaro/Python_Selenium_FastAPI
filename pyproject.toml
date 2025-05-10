@@ -1,0 +1,8 @@
+[tool.ruff.lint]
+select = ["ALL"]  # all checklists available
+
+ignore = [
+    "D203",  # ignore white lines before class
+    "D213",  # ignore resume in second line
+    "N812", #ignore Expectec Conditions as EC (because of selenium community)
+]
