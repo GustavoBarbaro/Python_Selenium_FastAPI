@@ -1,7 +1,8 @@
 """settings.py.
 
 This module contains the settings for configure the chrome webdriver
-and the pool size.
+and the pool size
+and the logger configuration.
 """
 
 from selenium.webdriver.chrome.options import Options
@@ -9,6 +10,13 @@ from selenium.webdriver.chrome.service import Service
 from webdriver_manager.chrome import ChromeDriverManager
 
 POOL_SIZE = 4
+
+
+LOG_FORMAT = (
+    "[%(asctime)s] [%(levelname)s] [%(threadName)s] [job-id:%(job_id)s] %(message)s"
+)
+
+LOG_LEVEL = "DEBUG"
 
 
 
